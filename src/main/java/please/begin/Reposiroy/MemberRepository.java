@@ -1,5 +1,6 @@
 package please.begin.Reposiroy;
 
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -8,9 +9,8 @@ import jakarta.persistence.EntityManager;
 import please.begin.domain.Member;
 import java.util.List;
 @Repository
-//@RequiredArgsConstructor
 public class MemberRepository {
-    @Autowired
+    @PersistenceContext
     private EntityManager em;
 
     public void save(Member member) {
@@ -29,5 +29,13 @@ public class MemberRepository {
         return em.createQuery("select m from Member m where m.name = :name", Member.class)
                 .setParameter("name", name)
                 .getResultList();
+    }
+
+    public Member findByEmail(String email) {
+        List<Member> results = em.createQuery("select m from Member m where m.email = :email", Member.class)
+                .setParameter("email", email)
+                .getResultList();
+
+        return results.isEmpty() ? null : results.get(0);
     }
 }
