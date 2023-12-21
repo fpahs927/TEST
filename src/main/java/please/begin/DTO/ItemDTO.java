@@ -1,6 +1,6 @@
 package please.begin.DTO;
 
-public class itemDTO {
+public class ItemDTO {
     private String id;
     private String name;
 
