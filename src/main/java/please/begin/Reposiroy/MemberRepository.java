@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 
-import java.lang.reflect.Member;
+import please.begin.domain.Member;
 import java.util.List;
 @Repository
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class MemberRepository {
     @Autowired
     private EntityManager em;

@@ -3,7 +3,6 @@ package please.begin.controller;
 import org.springframework.web.bind.annotation.*;
 
 import please.begin.DTO.ResponseDTO;
-import please.begin.DTO.ItemDTO;
 
 @RestController
 public class TestController {
@@ -24,11 +23,11 @@ public class TestController {
         return id;
     }
 
-    @PostMapping("/item") //데이터를 제출, 수정할 때 사용
-    public ResponseDTO registerItem(@RequestBody ItemDTO item){
-        ResponseDTO responseDTO = new ResponseDTO();
-        responseDTO.setMessage("good");
-        return responseDTO;
-    }
+//    @PostMapping("/item") //데이터를 제출, 수정할 때 사용
+//    public ResponseDTO registerItem(@RequestBody ItemDTO item){
+//        ResponseDTO responseDTO = new ResponseDTO();
+//        responseDTO.setMessage("good");
+//        return responseDTO;
+//    }
 
 }

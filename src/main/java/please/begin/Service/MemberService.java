@@ -1,18 +1,20 @@
 package please.begin.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import please.begin.Reposiroy.MemberRepository;
 
-import java.lang.reflect.Member;
+import please.begin.domain.Member;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
-@RequiredArgsConstructor
+//@Transactional(readOnly = true)
+//@RequiredArgsConstructor
 public class MemberService {
-    private final MemberRepository memberRepository;
+    @Autowired
+    private MemberRepository memberRepository;
     /**
      * 회원 가입
      * @param member
