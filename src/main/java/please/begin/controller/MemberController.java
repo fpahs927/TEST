@@ -1,48 +1,47 @@
 package please.begin.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import please.begin.LoginRequest;
+import please.begin.DTO.BoardDTO;
+import please.begin.DTO.MemberDTO;
 import please.begin.Service.MemberService;
-import please.begin.domain.Member;
+
+import java.util.List;
 
 @RestController
 public class MemberController {
     @Autowired
     private MemberService memberService;
-
-    @PostMapping("/signup")
-    public ResponseEntity<String> create(@RequestBody MemberForm form) {
-        Member member = new Member();
-        member.setName(form.getName());
-        member.setEmail(form.getEmail());
-        member.setPassword(form.getPassword());
-        member.setNickname(form.getNickname());
-
-        memberService.join(member);
-
-        // 성공적으로 생성되었을 경우
-        String successMessage = "Member created successfully!";
-        return new ResponseEntity<>(successMessage, HttpStatus.CREATED);
+    //로그인
+    @PostMapping("/member/_save")
+    public String save(@RequestBody MemberDTO memberDTO) {  //REQUESTBODY로 개발해라
+        System.out.println("MemberController.save");
+        System.out.println("memberDTO = " + memberDTO.getNickName());
+        System.out.println("memberDTO = " + memberDTO);
+        memberService.save(memberDTO);
+        return "login";
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        String email = loginRequest.getEmail();
-        String password = loginRequest.getPassword();
+    @GetMapping("/member/login")
+    public String loginForm() {
+        return "login";
+    }
 
-        // 실제로는 비밀번호를 안전하게 처리하는 방법을 사용해야 합니다 (예: BCryptPasswordEncoder 사용)
-        Member member = memberService.findByEmail(email);
-        if (member != null && member.getPassword().equals(password)) {
-            return new ResponseEntity<>("Login successful", HttpStatus.OK);
+    @PostMapping("/member/login")
+    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
+        MemberDTO loginResult = memberService.login(memberDTO);
+        if (loginResult != null) {
+            // login 성공
+            session.setAttribute("loginEmail", loginResult.getEmail());
+            return "main";
         } else {
-            return new ResponseEntity<>("Login failed", HttpStatus.UNAUTHORIZED);
+            // login 실패
+            return "login";
         }
     }
-
-
     @GetMapping("/notion") //공지사항 노래 넣기
     public String Getnotion(@RequestParam(required = false) String song) {
         String response = "눈물이 차올라서 고갤 들어\n흐르지 못하게 또 살짝 웃어\n내게 왜 이러는지 무슨 말을 하는지\n";
@@ -52,16 +51,42 @@ public class MemberController {
             return response;
         }
     }
-    //    @PostMapping("/login")
-//    public String create(@Valid MemberForm form, BindingResult result) {
-//
-//        if (result.hasErrors()) {
-//            return "members/createMemberForm";
-//        }
-//        Member member = new Member();
-//        member.setName(form.getName());
-//        memberService.join(member);
-//
-//        return "redirect:/";
-//    }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+    @GetMapping("/member/")
+    public String findAll(Model model) {
+        List<MemberDTO> memberDTOList = memberService.findAll();
+        // 어떠한 html로 가져갈 데이터가 있다면 model사용
+        model.addAttribute("memberList", memberDTOList);
+        return "list";
+    }
+
+    @GetMapping("/member/{id}")
+    public String findById(@PathVariable Long id, Model model) {
+        MemberDTO memberDTO = memberService.findById(id);
+        model.addAttribute("member", memberDTO);
+        return "detail";
+    }
+
+    @GetMapping("/member/update")
+    public String updateForm(HttpSession session, Model model) {
+        String myEmail = (String) session.getAttribute("loginEmail");
+        MemberDTO memberDTO = memberService.updateForm(myEmail);
+        model.addAttribute("updateMember", memberDTO);
+        return "update";
+    }
+
+    @GetMapping("/member/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "index";
+    }
+
+    @PostMapping("/member/email-check")
+    public @ResponseBody String emailCheck(@RequestParam("Email") String memberEmail) {
+        System.out.println("Email = " + memberEmail);
+        String checkResult = memberService.emailCheck(memberEmail);
+        return checkResult;
+    }
+
+
 }
