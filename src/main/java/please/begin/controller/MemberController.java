@@ -1,6 +1,7 @@
 package please.begin.controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.ui.Model;
@@ -11,12 +12,15 @@ import please.begin.Service.MemberService;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 public class MemberController {
     @Autowired
     private MemberService memberService;
     //로그인
-    @PostMapping("/member/_save")
+    @PostMapping("/member/_save")   //회원 가입 완료
     public String save(@RequestBody MemberDTO memberDTO) {  //REQUESTBODY로 개발해라
         System.out.println("MemberController.save");
         System.out.println("memberDTO = " + memberDTO.getNickName());
@@ -28,22 +32,25 @@ public class MemberController {
     @GetMapping("/member/login")
     public String loginForm() {
         return "login";
-    }
+    } //login 페이지를 띄어라
 
     @PostMapping("/member/login")
-    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
+    public String login(@RequestBody MemberDTO memberDTO, HttpSession session) {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             // login 성공
             session.setAttribute("loginEmail", loginResult.getEmail());
-            return "main";
+            System.out.println("success");
+            return "main"; //main 페이지로 이동하게
         } else {
             // login 실패
+            Logger logger = LoggerFactory.getLogger(MemberController.class);
+            logger.warn("Login failed for user with email: {}", memberDTO.getEmail());
             return "login";
         }
     }
     @GetMapping("/notion") //공지사항 노래 넣기
-    public String Getnotion(@RequestParam(required = false) String song) {
+    public String Getnotion(@RequestParam(name ="song", required = false) String song) {
         String response = "눈물이 차올라서 고갤 들어\n흐르지 못하게 또 살짝 웃어\n내게 왜 이러는지 무슨 말을 하는지\n";
         if (song != null) {
             return response + song;
