@@ -1,7 +1,6 @@
-package please.begin.Reposiroy;
+package please.begin.Repository;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 import please.begin.entity.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package please.begin;
+package please.begin.config;
 
 // Java
 import io.swagger.v3.oas.models.Components;

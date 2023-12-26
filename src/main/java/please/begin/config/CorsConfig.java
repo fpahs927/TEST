@@ -1,4 +1,4 @@
-package please.begin;
+package please.begin.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

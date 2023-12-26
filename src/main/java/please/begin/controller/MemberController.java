@@ -4,53 +4,68 @@ import jakarta.servlet.http.HttpSession;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import please.begin.DTO.BoardDTO;
 import please.begin.DTO.MemberDTO;
 import please.begin.Service.MemberService;
 
 import java.util.List;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import please.begin.entity.SampleResultEntity;
 
 @RestController
 public class MemberController {
     @Autowired
     private MemberService memberService;
+
+    private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
     //로그인
-    @PostMapping("/member/_save")   //회원 가입 완료
-    public String save(@RequestBody MemberDTO memberDTO) {  //REQUESTBODY로 개발해라
+    @PostMapping("/member/save")   //회원 가입 완료
+    public String save(@RequestBody MemberDTO memberDTO,HttpSession session) {  //REQUESTBODY로 개발해라
+        MemberDTO saveResult = memberService.save(memberDTO);
         System.out.println("MemberController.save");
+        session.setAttribute("loginResult", saveResult);
+
         System.out.println("memberDTO = " + memberDTO.getNickName());
-        System.out.println("memberDTO = " + memberDTO);
         memberService.save(memberDTO);
         return "login";
     }
 
     @GetMapping("/member/login")
-    public String loginForm() {
-        return "login";
-    } //login 페이지를 띄어라
-
-    @PostMapping("/member/login")
-    public String login(@RequestBody MemberDTO memberDTO, HttpSession session) {
-        MemberDTO loginResult = memberService.login(memberDTO);
+    public ResponseEntity<SampleResultEntity> login(@RequestParam("email") String email, @RequestParam("password") String password,
+                                    HttpSession session) {
+        MemberDTO loginResult = memberService.login(email,password);
         if (loginResult != null) {
             // login 성공
             session.setAttribute("loginEmail", loginResult.getEmail());
+            session.setAttribute("loginResult", loginResult);
             System.out.println("success");
-            return "main"; //main 페이지로 이동하게
+
+            return ResponseEntity.ok(new SampleResultEntity(true,"정상적으로 로그인이 되었습니다"));
         } else {
             // login 실패
             Logger logger = LoggerFactory.getLogger(MemberController.class);
-            logger.warn("Login failed for user with email: {}", memberDTO.getEmail());
-            return "login";
+            logger.warn("Login failed for user with email: {}", email);
+            return ResponseEntity.ok(new SampleResultEntity(false,"로그인이 실패하였습니다(ID 혹은 비밀번호를 확인하세요)"));
         }
     }
-    @GetMapping("/notion") //공지사항 노래 넣기
-    public String Getnotion(@RequestParam(name ="song", required = false) String song) {
+
+    @GetMapping("/member/email-check")
+    public @ResponseBody ResponseEntity<SampleResultEntity> email_check(@RequestParam("email") String email) {
+        System.out.println("Email = " + email);
+        boolean checkResult = memberService.isEmailExist(email);
+        if (checkResult) {
+            return ResponseEntity.ok(new SampleResultEntity(checkResult,"이미 사용 중인 이메일입니다."));
+        }
+        return  ResponseEntity.ok(new SampleResultEntity(checkResult,"등록되지 않은 이메일입니다."));
+}
+
+    @GetMapping("/notice") //공지사항 노래 넣기
+    public String GetNotice(@RequestParam(required = false) String song) {
         String response = "눈물이 차올라서 고갤 들어\n흐르지 못하게 또 살짝 웃어\n내게 왜 이러는지 무슨 말을 하는지\n";
         if (song != null) {
             return response + song;
@@ -87,13 +102,4 @@ public class MemberController {
         session.invalidate();
         return "index";
     }
-
-    @PostMapping("/member/email-check")
-    public @ResponseBody String emailCheck(@RequestParam("Email") String memberEmail) {
-        System.out.println("Email = " + memberEmail);
-        String checkResult = memberService.emailCheck(memberEmail);
-        return checkResult;
-    }
-
-
 }
