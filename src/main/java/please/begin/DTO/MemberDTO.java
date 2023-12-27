@@ -23,7 +23,6 @@ public class MemberDTO {
         memberDTO.setNickName(memberEntity.getNickName());
         return memberDTO;
     }
-
     private void setId(Long id) {
     }
 }
