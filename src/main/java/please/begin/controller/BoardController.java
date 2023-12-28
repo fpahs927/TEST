@@ -1,13 +1,22 @@
 package please.begin.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+<<<<<<< HEAD
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+=======
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+>>>>>>> parent of d3fcbdd (1227_수요일)
 import please.begin.DTO.BoardDTO;
-import please.begin.DTO.BoardResponseDTO;
 
+<<<<<<< HEAD
 import java.util.List;
 import java.util.Optional;
 
@@ -19,9 +28,21 @@ import please.begin.Service.MemberService;
 import please.begin.entity.MemberEntity;
 
 @RestController
-@RequiredArgsConstructor
-public class BoardController {
+=======
+import java.lang.reflect.Member;
 
+>>>>>>> parent of d3fcbdd (1227_수요일)
+@RequiredArgsConstructor
+@Controller
+@RequestMapping("/board")
+public class BoardController {
+    private final HttpSession session;
+    @GetMapping("/save")
+    @PostMapping("/boards")
+    public String writeBoard(@ModelAttribute BoardDTO writeDTO) {
+        Member principal = (Member) session.getAttribute("principal");
+
+<<<<<<< HEAD
     private final BoardService boardService;
     private final MemberService memberService;
 
@@ -59,8 +80,13 @@ public class BoardController {
         existingPost.setTitle(requestsDto.getTitle());
         existingPost.setContent(requestsDto.getContent());
         return boardService.updatePost(id, existingPost);
+=======
+        BoardDTO boards = new BoardDTO();
+        boards.setTitle(boards.getTitle());
+        boards.setContent(boards.getContent());
+        return "redirect/:";
+>>>>>>> parent of d3fcbdd (1227_수요일)
     }
 }
-
 
 

@@ -1,15 +1,16 @@
 package please.begin.DTO;
 
 import lombok.*;
-import please.begin.entity.Board;
-
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class BoardDTO {
-    private int memberid;
     private String title;
     private String content;
+<<<<<<< HEAD
     private String nickName;
 
     public BoardDTO(int memberid, String title, String contents, String nickName) {
@@ -41,6 +42,7 @@ public class BoardDTO {
     //public void setAuthor(String author){
     //    this.author=author;
  //   }
+=======
+>>>>>>> parent of d3fcbdd (1227_수요일)
 
 }
-

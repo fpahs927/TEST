@@ -48,6 +48,7 @@ public class MemberEntity {
         return memberEntity;
     }
 
+<<<<<<< HEAD
     public static MemberEntity toMemberEntity(String name, String email, String password, String nickName) {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setEmail(email);
@@ -57,4 +58,6 @@ public class MemberEntity {
         return memberEntity;
     }
 
+=======
+>>>>>>> parent of d3fcbdd (1227_수요일)
 }
