@@ -16,7 +16,7 @@ public class Board extends Timestamped {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false) //필수로 있어야함
     private int memberid;
 
     @Column(nullable = false)
@@ -25,13 +25,13 @@ public class Board extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
-    @Column(nullable = false)
+    @Column
     private String author;
 
     public Board(BoardDTO requestsDto) {
         this.title = requestsDto.getTitle();
         this.contents=requestsDto.getContent();
-        this.author = requestsDto.getAuthor();
+        this.author = requestsDto.getNickName();
         this.memberid = requestsDto.getMemberid();
   //    this.password = requestsDto.getPassword();
 
@@ -43,8 +43,6 @@ public class Board extends Timestamped {
             this.setTitle(boardDTO.getTitle());
             this.setContents(boardDTO.getContent());
         }
-        // BoardDTO를 받는 생성자 추가
-
 
     }
     }

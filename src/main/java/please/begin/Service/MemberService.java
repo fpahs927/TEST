@@ -36,10 +36,9 @@ public class MemberService {
         return MemberDTO.toMemberDTO(savedMemberEntity);
     }
 
-    public MemberDTO save(int member_id, String email, String name, String password, String Nickname) {
+    public MemberDTO save(String email, String name, String password, String Nickname) {
         // 1. dto -> entity 변환
-        MemberEntity memberEntity = MemberEntity.toMemberEntity(name, email, member_id, password,Nickname);
-
+        MemberEntity memberEntity = MemberEntity.toMemberEntity(name, email,password,Nickname);
         // 2. repository의 save 메서드 호출
         MemberEntity savedMemberEntity = memberRepository.save(memberEntity);
 
@@ -60,7 +59,7 @@ public class MemberService {
             MemberEntity memberEntity = byMemberEmail.get();
 //            if (memberEntity.getPassword().equals(password))
             if(__authenticateUser(password,memberEntity.getPassword()))
-            {
+            { //__auth 암호인데 만약 안될 시 61번째 주석 풀고 사용해라
                 // 비밀번호 일치
                 // entity -> dto 변환 후 리턴
                 MemberDTO dto = MemberDTO.toMemberDTO(memberEntity);

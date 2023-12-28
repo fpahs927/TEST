@@ -6,10 +6,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import please.begin.DTO.BoardDTO;
 import please.begin.DTO.BoardResponseDTO;
+import please.begin.DTO.MemberDTO;
 import please.begin.Repository.BoardRepository;
 import please.begin.entity.Board;
+import please.begin.entity.MemberEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BoardService {
@@ -40,9 +43,21 @@ public class BoardService {
     public BoardResponseDTO createPost(BoardDTO requestsDto) {
         //게시글 작성
         Board board = new Board(requestsDto);
+        board.setMemberid(requestsDto.getMemberid());
+        board.setContents(requestsDto.getContent());
+        board.setTitle(requestsDto.getTitle());
         boardRepository.save(board);
         return new BoardResponseDTO(board);
     }
+//    public BoardDTO findById(Long id) {
+//        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(id);
+//        if (optionalMemberEntity.isPresent()) {
+//            return MemberDTO.toMemberDTO(optionalMemberEntity.get());
+//        } else {
+//            return null;
+//        }
+//
+//    }
 
     @Transactional
     public BoardResponseDTO getPost(Long id) {
@@ -55,9 +70,19 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
-        board.update(requestsDto);
+        board.setTitle(requestsDto.getTitle());
+        board.setContents(requestsDto.getContent());
         return new BoardResponseDTO(board);
     }
 
 
+    @Transactional
+    public BoardDTO findById(Long id) {
+        Optional<Board> BoardEntity = boardRepository.findById(id);
+        if(BoardEntity.isPresent()){
+            return BoardDTO.toBoardDTO(BoardEntity.get());
+        }else{
+            return null;
+        }
+    }
 }

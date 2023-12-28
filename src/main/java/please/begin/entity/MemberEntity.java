@@ -24,6 +24,7 @@ public class MemberEntity {
 
     @Column
     private String Name;
+
     @Column
     private String NickName;
 
@@ -46,13 +47,13 @@ public class MemberEntity {
         return memberEntity;
     }
 
-    public static MemberEntity toMemberEntity(String name, String email, int memberId, String password, String nickName) {
+    public static MemberEntity toMemberEntity(String name, String email, String password, String nickName) {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setEmail(email);
-        memberEntity.setMemberId(memberId);
         memberEntity.setName(name);
         memberEntity.setPassword(password);
         memberEntity.setNickName(nickName);
         return memberEntity;
     }
+
 }

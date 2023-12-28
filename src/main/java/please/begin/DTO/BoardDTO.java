@@ -10,19 +10,37 @@ public class BoardDTO {
     private int memberid;
     private String title;
     private String content;
-    private String author;
-//    public BoardDTO(Board board) {
-//        this.author = board.getAuthor();
-//        this.title = board.getTitle();
-//        this.content= board.getContents();
-//}
+    private String nickName;
 
-    public BoardDTO(int memberid, String title, String contents, String author) {
+    public BoardDTO(int memberid, String title, String contents, String nickName) {
         this.title = title;
         this.content = contents;
-        this.author = author;
+        this.nickName = nickName;
         this.memberid=memberid;
     }
+    public BoardDTO() {
+
+    }
+    public static BoardDTO toBoardDTO(Board boardEntity) {
+        BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setMemberid(boardEntity.getMemberid());
+        boardDTO.setTitle(boardEntity.getTitle());
+        boardDTO.setContent(boardEntity.getContents());
+  //      boardDTO.setAuthor(boardEntity.getAuthor());
+        return boardDTO;
+    }
+    public Board toBoardEntity() {
+        Board boardEntity = new Board();
+        boardEntity.setMemberid(this.getMemberid());
+        boardEntity.setTitle(this.getTitle());
+        boardEntity.setContents(this.getContent());
+     //   boardEntity.setAuthor(this.getAuthor());
+        return boardEntity;
+    }
+
+    //public void setAuthor(String author){
+    //    this.author=author;
+ //   }
 
 }
 

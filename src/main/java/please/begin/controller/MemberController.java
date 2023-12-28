@@ -28,10 +28,9 @@ public class MemberController {
     //로그인
     @PostMapping("/member/save")   //회원 가입 완료
     public ResponseEntity<SampleResultEntity> save(
-            @RequestBody MemberDTO memberDTO
-            ,HttpSession session) {  //REQUESTBODY로 개발해라
+            @RequestBody MemberDTO memberDTO,HttpSession session) {  //REQUESTBODY로 개발해라
         try {
-            //           MemberDTO saveResult = memberService.save(member_id, email, name, password,Nickname);
+             //          MemberDTO saveResult = memberService.save();
             // 2. 세션에 저장
             MemberDTO saveResult = memberService.save(memberDTO);
             session.setAttribute("loginResult", saveResult);

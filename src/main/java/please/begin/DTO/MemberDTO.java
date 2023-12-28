@@ -12,7 +12,7 @@ public class MemberDTO {
     private String Email;
     private String Password;
     private String Name;
-    private String NickName;
+    private String nickName;
 
     public static MemberDTO toMemberDTO(MemberEntity memberEntity) {
         MemberDTO memberDTO = new MemberDTO();
