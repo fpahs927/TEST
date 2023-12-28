@@ -1,7 +1,11 @@
 package please.begin.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import please.begin.entity.MemberEntity;
+
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -10,7 +14,7 @@ import please.begin.entity.MemberEntity;
 public class MemberDTO {
     private int memberId;
     private String Email;
-    private String Password;
+    private String password; // 패스워드를 리스트로 변경
     private String Name;
     private String nickName;
 
@@ -23,6 +27,7 @@ public class MemberDTO {
         memberDTO.setNickName(memberEntity.getNickName());
         return memberDTO;
     }
+
     private void setId(Long id) {
     }
 }

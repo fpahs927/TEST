@@ -20,6 +20,7 @@ public class MemberEntity {
     private String email;
 
     @Column
+
     private String Password;
 
     @Column

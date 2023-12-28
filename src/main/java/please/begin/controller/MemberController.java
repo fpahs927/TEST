@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 
 import please.begin.entity.SampleResultEntity;
 
+
 @RestController
 public class MemberController {
     @Autowired
@@ -44,6 +45,8 @@ public class MemberController {
             return SampleResultEntity.ToResponse(HttpStatus.INTERNAL_SERVER_ERROR,false, "회원 가입 도중 오류 발생");
         }
     }
+
+    
 
     @GetMapping("/member/login")//로그인
     public ResponseEntity<SampleResultEntity> login(@RequestParam("email") String email, @RequestParam("password") String password,
@@ -138,6 +141,7 @@ public class MemberController {
 //        model.addAttribute("updateMember", memberDTO);
 //        return "update";
 //    }
+
 
 
 }

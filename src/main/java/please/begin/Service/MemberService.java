@@ -27,7 +27,7 @@ public class MemberService {
         // 1. dto -> entity 변환
         MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO);
 
-        memberEntity.setPassword(passwordEncoder.encode(memberEntity.getPassword()));
+       // memberEntity.setPassword(passwordEncoder.encode(memberEntity.getPassword()));
 
         // 2. repository의 save 메서드 호출
         MemberEntity savedMemberEntity = memberRepository.save(memberEntity);
@@ -58,7 +58,8 @@ public class MemberService {
             // 조회 결과가 있다(해당 이메일을 가진 회원 정보가 있다)
             MemberEntity memberEntity = byMemberEmail.get();
 //            if (memberEntity.getPassword().equals(password))
-            if(__authenticateUser(password,memberEntity.getPassword()))
+     //       if(__authenticateUser(password,memberEntity.getPassword()))
+            if(__authenticateUser(password, memberEntity.getPassword().toString()))
             { //__auth 암호인데 만약 안될 시 61번째 주석 풀고 사용해라
                 // 비밀번호 일치
                 // entity -> dto 변환 후 리턴
